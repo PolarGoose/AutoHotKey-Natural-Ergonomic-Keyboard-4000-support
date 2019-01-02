@@ -7,7 +7,7 @@ from "Microsoft Natural Ergonomic Keyboard 4000" like:
 - ‘=’ ‘(‘ ‘)’ keys on top of the numpad.
 
 This module connects to the USB HID device which is registered by the keyboard and handles events
-which come from these extra buttons converting them to AutoHotKey subroutine labels, giving the ability to customize their behavior.
+which come from these extra buttons converting them to AutoHotKey subroutine labels, providing the ability to customize their behavior.
 
 ### How to use
 
