@@ -12,7 +12,7 @@ which come from these extra buttons converting them to AutoHotKey subroutine lab
 
 ### How to use
 
-- Remove "Microsoft Mouse and Keyboard Center" if installed
+- Uninstall "Microsoft Mouse and Keyboard Center" if installed
 - Simply copy the files including "ExternalLibraries" folder to the folder with your script.
 - Look at the "example.ahk" file, which shows how you can use this module in your AHK script.
 - The full list of keys with their labels is located inside the “Natural_keyboard_4000_support.ahk” file.
