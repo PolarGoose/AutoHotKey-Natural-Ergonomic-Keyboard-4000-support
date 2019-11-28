@@ -1,5 +1,5 @@
-#include %A_ScriptDir%\ExternalLibraries\AHKHID.ahk
-#include %A_ScriptDir%\ExternalLibraries\Bin2Hex.ahk
+#include .\ExternalLibraries\AHKHID.ahk
+#include .\ExternalLibraries\Bin2Hex.ahk
 
 OnMessage(0x00FF, "InputMessage") ; subscrube for WM_INPUT
 AHKHID_Register(12, 1, A_ScriptHwnd, RIDEV_INPUTSINK) ; the keyboard has UsagePage=12 and Usage=1
