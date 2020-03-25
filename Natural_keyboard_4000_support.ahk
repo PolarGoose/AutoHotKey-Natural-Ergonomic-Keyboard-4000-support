@@ -1,5 +1,8 @@
+;!roy
 #include .\ExternalLibraries\AHKHID.ahk
 #include .\ExternalLibraries\Bin2Hex.ahk
+
+A_ThisHID := ""
 
 OnMessage(0x00FF, "InputMessage") ; subscrube for WM_INPUT
 AHKHID_Register(12, 1, A_ScriptHwnd, RIDEV_INPUTSINK) ; the keyboard has UsagePage=12 and Usage=1
@@ -24,7 +27,9 @@ InputMessage(wParam, lParam) {
     if (vendorId = 1118) and (productId = 219) {
         local hex := Bin2Hex(&uData, numberOfBytes)
         if IsLabel(hex) {
+            A_ThisHID := hex
             Gosub, %hex%
+            A_ThisHID := ""
         }
     }
 }
