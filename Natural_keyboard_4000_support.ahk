@@ -1,4 +1,3 @@
-;!roy
 #include .\ExternalLibraries\AHKHID.ahk
 #include .\ExternalLibraries\Bin2Hex.ahk
 
@@ -23,14 +22,22 @@ InputMessage(wParam, lParam) {
     local productId := AHKHID_GetDevInfo(inputInfo, DI_HID_PRODUCTID, True)
 
     ; if the event came from our keyboard (vendor and product ids match),
-    ; we call a subroutine related to the pressed key code if this subroutine exists
+    ; we call a subroutine related to the pressed key code or name if this subroutine exists
     if (vendorId = 1118) and (productId = 219) {
         local hex := Bin2Hex(&uData, numberOfBytes)
-        if IsLabel(hex) {
-            A_ThisHID := hex
-            Gosub, %hex%
-            A_ThisHID := ""
+        local name := MSNaturalHID["HID_" . hex]
+
+        if not name {
+            OutputDebug, Unknown MS Natural Keyboard HID: %hex%
         }
+
+        A_ThisHID := IsLabel(hex) ? hex : (IsLabel(name) ? name : "")
+
+        if A_ThisHID {
+            Gosub, %A_ThisHID%
+        }
+        A_ThisHID := ""
+        
     }
 }
 
