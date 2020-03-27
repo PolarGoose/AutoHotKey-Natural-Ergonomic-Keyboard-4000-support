@@ -3,7 +3,7 @@
 
 ; ======
 
-HID_DEBUG := true
+HID_DEBUG := false
 
 ; ======
 

@@ -124,27 +124,27 @@ HID_FnLock:
 ; ======
 
 
-HID_BrowserBack:
-    return
-HID_BrowserForward:
-    return
-
-HID_BrowserHome:
-    return
-HID_BrowserSearch:
-    return
-HID_LaunchMail:
-    return
-
-HID_VolumeMute:
-    return
-HID_VolumeDown:
-    return
-HID_VolumeUp:
-    return
-HID_MediaPlayPause:
-    return
-
-HID_Calculator:
-    return
+; HID_BrowserBack:
+;     return
+; HID_BrowserForward:
+;     return
+; 
+; HID_BrowserHome:
+;     return
+; HID_BrowserSearch:
+;     return
+; HID_LaunchMail:
+;     return
+; 
+; HID_VolumeMute:
+;     return
+; HID_VolumeDown:
+;     return
+; HID_VolumeUp:
+;     return
+; HID_MediaPlayPause:
+;     return
+; 
+; HID_Calculator:
+;     return
 
