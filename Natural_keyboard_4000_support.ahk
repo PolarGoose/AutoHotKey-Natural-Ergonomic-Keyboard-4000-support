@@ -1,62 +1,40 @@
-#include .\ExternalLibraries\AHKHID.ahk
-#include .\ExternalLibraries\Bin2Hex.ahk
+#include %A_ScriptDir%\ExternalLibraries\AHKHID.ahk
 
-; ======
-
-HID_DEBUG := false
-
-; ======
-
-MSNaturalHID := { "HID_0100000000040000": "HID_Favorites1"
-                , "HID_0100000000080000": "HID_Favorites2"
-                , "HID_0100000000100000": "HID_Favorites3"
-                , "HID_0100000000200000": "HID_Favorites4"
-                , "HID_0100000000400000": "HID_Favorites5"
-                , "HID_0182010000000000": "HID_MyFavorites"
-                , "HID_012E020000000000": "HID_ZoomDown"
-                , "HID_012D020000000000": "HID_ZoomUp"
-                , "HID_0100006700000000": "HID_NumpadEqual"
-                , "HID_010000B600000000": "HID_NumpadLeftBracket"
-                , "HID_010000B700000000": "HID_NumpadRightBracket"
-                , "HID_0195000000000000": "HID_F1"
-                , "HID_011A020000000000": "HID_F2"
-                , "HID_0179020000000000": "HID_F3"
-                , "HID_0101020000000000": "HID_F4"
-                , "HID_0102020000000000": "HID_F5"
-                , "HID_0103020000000000": "HID_F6"
-                , "HID_0189020000000000": "HID_F7"
-                , "HID_018B020000000000": "HID_F8"
-                , "HID_018C020000000000": "HID_F9"
-                , "HID_01AB010000000000": "HID_F10"
-                , "HID_0107020000000000": "HID_F11"
-                , "HID_0108020000000000": "HID_F12"
-                , "HID_0124020000000000": "HID_BrowserBack"
-                , "HID_0125020000000000": "HID_BrowserForward"
-                , "HID_0123020000000000": "HID_BrowserHome"
-                , "HID_0121020000000000": "HID_BrowserSearch"
-                , "HID_018A010000000000": "HID_LaunchMail"
-                , "HID_01E2000000000000": "HID_VolumeMute"
-                , "HID_01EA000000000000": "HID_VolumeDown"
-                , "HID_01E9000000000000": "HID_VolumeUp"
-                , "HID_01CD000000000000": "HID_MediaPlayPause"
-                , "HID_0192010000000000": "HID_Calculator"
-                , "HID_0100000000020000": "HID_FnLock"
-                , "HID_0100000000000000": "HID_KeyUp"}
-
-; ======
-
-HID_Init() {
-    global
-
-    HID_State := {}
-    HID_RawHID := ""
-    HID_HID := ""
-    HID_Key := ""
-
-    A_ThisHID := ""
-}
-
-; ======
+MsNatural4000_keyCodeToNameMapping := { 0x0100000000040000: "MsNatural4000_Favorites1"
+                                      , 0x0100000000080000: "MsNatural4000_Favorites2"
+                                      , 0x0100000000100000: "MsNatural4000_Favorites3"
+                                      , 0x0100000000200000: "MsNatural4000_Favorites4"
+                                      , 0x0100000000400000: "MsNatural4000_Favorites5"
+                                      , 0x0182010000000000: "MsNatural4000_MyFavorites"
+                                      , 0x012E020000000000: "MsNatural4000_ZoomDown"
+                                      , 0x012D020000000000: "MsNatural4000_ZoomUp"
+                                      , 0x0100006700000000: "MsNatural4000_NumpadEqual"
+                                      , 0x010000B600000000: "MsNatural4000_NumpadLeftBracket"
+                                      , 0x010000B700000000: "MsNatural4000_NumpadRightBracket"
+                                      , 0x0195000000000000: "MsNatural4000_F1_Flock_disabled"
+                                      , 0x011A020000000000: "MsNatural4000_F2_Flock_disabled"
+                                      , 0x0179020000000000: "MsNatural4000_F3_Flock_disabled"
+                                      , 0x0101020000000000: "MsNatural4000_F4_Flock_disabled"
+                                      , 0x0102020000000000: "MsNatural4000_F5_Flock_disabled"
+                                      , 0x0103020000000000: "MsNatural4000_F6_Flock_disabled"
+                                      , 0x0189020000000000: "MsNatural4000_F7_Flock_disabled"
+                                      , 0x018B020000000000: "MsNatural4000_F8_Flock_disabled"
+                                      , 0x018C020000000000: "MsNatural4000_F9_Flock_disabled"
+                                      , 0x01AB010000000000: "MsNatural4000_F10_Flock_disabled"
+                                      , 0x0107020000000000: "MsNatural4000_F11_Flock_disabled"
+                                      , 0x0108020000000000: "MsNatural4000_F12_Flock_disabled"
+                                      , 0x0124020000000000: "MsNatural4000_BrowserBack"
+                                      , 0x0125020000000000: "MsNatural4000_BrowserForward"
+                                      , 0x0123020000000000: "MsNatural4000_BrowserHome"
+                                      , 0x0121020000000000: "MsNatural4000_BrowserSearch"
+                                      , 0x018A010000000000: "MsNatural4000_LaunchMail"
+                                      , 0x01E2000000000000: "MsNatural4000_VolumeMute"
+                                      , 0x01EA000000000000: "MsNatural4000_VolumeDown"
+                                      , 0x01E9000000000000: "MsNatural4000_VolumeUp"
+                                      , 0x01CD000000000000: "MsNatural4000_MediaPlayPause"
+                                      , 0x0192010000000000: "MsNatural4000_Calculator"
+                                      , 0x0100000000020000: "MsNatural4000_FnLock"
+                                      , 0x0100000000000000: "MsNatural4000_KeyUp" }
 
 OnMessage(0x00FF, "InputMessage") ; subscrube for WM_INPUT
 AHKHID_Register(12, 1, A_ScriptHwnd, RIDEV_INPUTSINK) ; the keyboard has UsagePage=12 and Usage=1
@@ -79,106 +57,54 @@ InputMessage(wParam, lParam) {
     ; if the event came from our keyboard (vendor and product ids match),
     ; we call a subroutine related to the pressed key code or name if this subroutine exists
     if (vendorId = 1118) and (productId = 219) {
-        HID_RawHID := Bin2Hex(&uData, numberOfBytes)
-
-        if IsLabel(HID_RawHID) {
-            A_ThisHID := HID_RawHID
-        } else {
-            HID_HID := SeparateState(HID_RawHID)
-            HID_Key := MSNaturalHID["HID_" . HID_HID]
-
-            if HID_DEBUG {
-                OutputDebug % "HID_RawHID: " . HID_RawHID
-                OutputDebug % "HID_HID:    " . HID_HID
-                OutputDebug % "HID_State:`n" . StateStr()
-                OutputDebug % "HID_Key:    " . HID_Key
-            }
-
-            if not HID_Key {
-                OutputDebug % "Unknown MS Natural Keyboard HID: " . %HID_RawHID% . ":" . HID_HID
-                return
-            } 
-
-            if IsLabel(HID_Key) {
-                A_ThisHID := HID_Key
-            }
+        local hexString := "0x" . BinaryDataToHexDecimalString(uData, numberOfBytes)
+        local keyCode := SeparateKeyModifiers(hexString)
+        local keyName := MsNatural4000_keyCodeToNameMapping[keyCode]
+        if IsLabel(keyName) {
+            Gosub, %keyName%
         }
-
-        if A_ThisHID {
-            Gosub, %A_ThisHID%
-        }
-
-        HID_Init()
     }
 }
 
-; ======
+SeparateKeyModifiers(hexString) {
+    ; convert hexdecimal string representation to value
+    local code := hexString + 0
 
-SeparateState(hex) {
-    local tmp := "0x" hex
-    local code := tmp + 0
+    local modifiers := {}
+    modifiers["Fn"] := (code & 0x10000) != 0
+    modifiers["LCtrl"] := (code & 0x01) != 0
+    modifiers["LShift"] := (code & 0x02) != 0
+    modifiers["LAlt"] := (code & 0x04) != 0
+    modifiers["LWin"] := (code & 0x08) != 0
+    modifiers["RCtrl"] := (code & 0x10) != 0
+    modifiers["RShift"] := (code & 0x20) != 0
+    modifiers["RAlt"] := (code & 0x40) != 0
+    modifiers["RWin"] := (code & 0x80) != 0
+    modifiers["Ctrl"] := modifiers["LCtrl"] or modifiers["RCtrl"]
+    modifiers["Shift" ] := modifiers["LShift"] or modifiers["RShift"]
+    modifiers["Alt"] := modifiers["LAlt"] or modifiers["RAlt"]
+    modifiers["Win"] := modifiers["LWin"] or modifiers["RWin"]
 
-    HID_State := {}
-    
-    HID_State["Fn"]     := (code & 0x10000) != 0
+    ; store modifiers in a global variable
+    MsNatural4000_keyModifiers := modifiers
 
-    HID_State["LCtrl"]  := (code & 0x01) != 0
-    HID_State["LShift"] := (code & 0x02) != 0
-    HID_State["LAlt"]   := (code & 0x04) != 0
-    HID_State["LWin"]   := (code & 0x08) != 0
-
-    HID_State["RCtrl"]  := (code & 0x10) != 0
-    HID_State["RShift"] := (code & 0x20) != 0
-    HID_State["RAlt"]   := (code & 0x40) != 0
-    HID_State["RWin"]   := (code & 0x80) != 0
-        
-    HID_State["Ctrl"]   := HID_State["LCtrl"]  or HID_State["RCtrl"]
-    HID_State["Shift" ] := HID_State["LShift"] or HID_State["RShift"]
-    HID_State["Alt"]    := HID_State["LAlt"]   or HID_State["RAlt"]
-    HID_State["Win"]    := HID_State["LWin"]   or HID_State["RWin"]
-        
-    ; clean up HID from State
-    ;    AHK bitwise operations seems buggy
-    code := code & 0x0FFFFFFFFFFEFF00
-    hex := Format("{:016X}", code)
-
-    return hex
+    local codeWithoutModifiers := code & 0x0FFFFFFFFFFEFF00
+    return codeWithoutModifiers
 }
 
-; ======
-; debug function
+BinaryDataToHexDecimalString(ByRef binaryVar, binaryVarSize)
+{
+    ; https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-cryptbinarytostringa
+    ; 0x4000000c = CRYPT_STRING_NOCRLF & CRYPT_STRING_HEX
 
-StateStr() {
-    local s := ""
+    ; calculate output string size
+    DllCall("crypt32.dll\CryptBinaryToString", "Ptr", &binaryVar, "UInt", binaryVarSize, "UInt", 0x4000000c, "Ptr", 0, "UInt*", outputSize)
 
-    s .= "`tLeft:`t"
-    s .= (HID_State["LCtrl"]  ? "CTRL"  : "ctrl")  . " "
-    s .= (HID_State["LShift"] ? "SHIFT" : "shift") . " "
-    s .= (HID_State["LAlt"]   ? "ALT"   : "alt")   . " "
-    s .= (HID_State["LWin"]   ? "WIN"   : "win")   . " "
-    s .= "`n"
+    ; allocate buffer for storing resulting string
+    VarSetCapacity(hexVar, outputSize * ( A_Isunicode ? 2 : 1 ), 1)
 
-    s .= "`tRight:`t"
-    s .= (HID_State["RCtrl"]  ? "CTRL"  : "ctrl")  . " "
-    s .= (HID_State["RShift"] ? "SHIFT" : "shift") . " "
-    s .= (HID_State["RAlt"]   ? "ALT"   : "alt")   . " "
-    s .= (HID_State["RWin"]   ? "WIN"   : "win")   . " "
-    s .= "`n"
+    ; convert binary data to the string
+    DllCall("crypt32.dll\CryptBinaryToString", "Ptr", &binaryVar, "UInt", binaryVarSize, "UInt", 0x4000000c, "Ptr", &hexVar, "UInt*", outputSize)
 
-    s .= "`tBoth:`t"
-    s .= (HID_State["Ctrl"]  ? "CTRL"  : "ctrl")  . " "
-    s .= (HID_State["Shift"] ? "SHIFT" : "shift") . " "
-    s .= (HID_State["Alt"]   ? "ALT"   : "alt")   . " "
-    s .= (HID_State["Win"]   ? "WIN"   : "win")   . " "
-    s .= "`n"
-
-    s .= "`tFn:`t`t"
-    s .= (HID_State["Fn"]  ? "FN"  : "fn")  . " "
-    s .= "`n"
-
-    return s
+    return StrGet(&hexVar)
 }
-
-; ======
-
-HID_Init()
