@@ -1,5 +1,6 @@
+
 Bin2Hex(addr,len) {
-    Static fun, ptr 
+    Static fun, ptr, hex
     If (fun = "") {
         If A_IsUnicode
             If (A_PtrSize = 8)
