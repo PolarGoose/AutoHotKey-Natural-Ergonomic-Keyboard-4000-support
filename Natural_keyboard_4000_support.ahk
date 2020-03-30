@@ -1,9 +1,11 @@
-#include .\ExternalLibraries\AHKHID.ahk
+; include by relative path
+#include %A_LineFile%\..\ExternalLibraries\nsAHKHID.ahk
 
 class TMsNatural4000
 {
-    static vendorId = 1118
-    static productId = 219
+    ; Microsoft Natural 4000 keyboard vendor and product ids
+    static vendorId = 0x045E
+    static productId = 0x00DB
 
     static keyCodeToNameMapping := { 0x0100000000040000: "MsNatural4000_Favorites1"
                                    , 0x0100000000080000: "MsNatural4000_Favorites2"
@@ -41,48 +43,49 @@ class TMsNatural4000
                                    , 0x0100000000020000: "MsNatural4000_FnLock"
                                    , 0x0100000000000000: "MsNatural4000_KeyUp" }
 
-    __New(){
-        OnMessage(0x00FF, ObjBindMethod(this, "InputMessage")) ; subscrube for WM_INPUT
-        global RIDEV_INPUTSINK
-        AHKHID_Register(12, 1, A_ScriptHwnd, RIDEV_INPUTSINK) ; the keyboard has UsagePage=12 and Usage=1
+    __New() {
+        global AHKHID
+        OnMessage(0x00FF, ObjBindMethod(this, "HandleInputMessage")) ; subscrube for WM_INPUT
+        AHKHID.Register(12, 1, A_ScriptHwnd, AHKHID.RIDEV_INPUTSINK) ; the keyboard has UsagePage=12 and Usage=1
     }
 
-    InputMessage(wParam, lParam) {
-        global ; we need to have access to global variables
+    HandleInputMessage(wParam, lParam) {
         Critical ; otherwise you can get ERROR_INVALID_HANDLE
 
+        global AHKHID
+
         ; if the event came from not a HID device we don't need to handle it
-        local devType := AHKHID_GetInputInfo(lParam, II_DEVTYPE)
-        if (devType != RIM_TYPEHID) {
+        devType := AHKHID.GetInputInfo(lParam, AHKHID.II_DEVTYPE)
+        if (devType != AHKHID.RIM_TYPEHID) {
             return
         }
 
-        local inputInfo := AHKHID_GetInputInfo(lParam, II_DEVHANDLE)
-        local numberOfBytes := AHKHID_GetInputData(lParam, uData)
-        local vendorId := AHKHID_GetDevInfo(inputInfo, DI_HID_VENDORID, True)
-        local productId := AHKHID_GetDevInfo(inputInfo, DI_HID_PRODUCTID, True)
+        inputInfo := AHKHID.GetInputInfo(lParam, AHKHID.II_DEVHANDLE)
+        numberOfBytes := AHKHID.GetInputData(lParam, uData)
+        vendorId := AHKHID.GetDevInfo(inputInfo, AHKHID.DI_HID_VENDORID, True)
+        productId := AHKHID.GetDevInfo(inputInfo, AHKHID.DI_HID_PRODUCTID, True)
 
-        ; if the event came from our keyboard (vendor and product ids match),
-        ; we call a subroutine related to the pressed key code or name if this subroutine exists
+        ; if the event came from our keyboard (vendor and product ids match)
         if (vendorId = this.vendorId) and (productId = this.productId) {
-            local hexString := "0x" . this.BinaryDataToHexDecimalString(uData, numberOfBytes)
-            local keyCode := this.SeparateKeyModifiers(hexString)
-            local keyName := this.keyCodeToNameMapping[keyCode]
-
+            hexString := "0x" . this.BinaryDataToHexDecimalString(uData, numberOfBytes)
+            keyCode := this.SeparateKeyModifiers(hexString)
+            keyName := this.keyCodeToNameMapping[keyCode]
             this.OnKey(keyName, keyCode, hexString)
         }
     }
 
+    ; event function, you can override it for some reason
     OnKey(keyName, keyCode, hexString) {
+        ; call a subroutine related to the pressed key name if this subroutine exists
         if IsLabel(keyName) 
             Gosub, %keyName%
     }
 
     SeparateKeyModifiers(hexString) {
         ; convert hexdecimal string representation to value
-        local code := hexString + 0
+        code := hexString + 0
 
-        local modifiers := {}
+        modifiers := {}
         modifiers["Fn"] := (code & 0x10000) != 0
         modifiers["LCtrl"] := (code & 0x01) != 0
         modifiers["LShift"] := (code & 0x02) != 0
@@ -97,10 +100,10 @@ class TMsNatural4000
         modifiers["Alt"] := modifiers["LAlt"] or modifiers["RAlt"]
         modifiers["Win"] := modifiers["LWin"] or modifiers["RWin"]
 
-        ; store modifiers in a global variable
+        ; store modifiers in a object variable
         this.keyModifiers := modifiers
 
-        local codeWithoutModifiers := code & 0x0FFFFFFFFFFEFF00
+        codeWithoutModifiers := code & 0x0FFFFFFFFFFEFF00
         return codeWithoutModifiers
     }
 
@@ -123,3 +126,4 @@ class TMsNatural4000
 }
 
 MsNatural4000 := new TMsNatural4000()
+
