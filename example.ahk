@@ -35,17 +35,17 @@ MsNatural4000_KeyUp:
 
 ; === Example of using modifiers while pressing a button ===
 MsNatural4000_MyFavorites:
-    if MsNatural4000_keyModifiers.Shift {
+    if MsNatural4000.keyModifiers.Shift {
         MsgBox Shift and MyFavorites button
         return
     }
 
-    if MsNatural4000_keyModifiers.LCtrl and MsNatural4000_keyModifiers.RCtrl {
+    if MsNatural4000_keyModifiers.LCtrl and MsNatural4000.keyModifiers.RCtrl {
         MsgBox LeftCtrl+RightCtrl and MyFavorites button
         return
     }
 
-    if MsNatural4000_keyModifiers.Fn {
+    if MsNatural4000.keyModifiers.Fn {
         MsgBox "My Favorites Button while Fn-lock is Enabled"
     }
 
