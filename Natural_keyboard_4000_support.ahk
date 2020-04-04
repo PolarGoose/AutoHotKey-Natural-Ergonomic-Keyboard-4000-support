@@ -1,5 +1,16 @@
-; include by relative path
 #include %A_LineFile%\..\ExternalLibraries\nsAHKHID.ahk
+
+; the script relies on CRYPT_STRING_NOCRLF Win32Api flag which is supported only since Vista
+if A_OSVersion in WIN_2003,WIN_XP,WIN_2000
+{
+    MsgBox This script requires Windows Vista or later.
+    ExitApp
+}
+
+if (A_PtrSize != 8) {
+    MsgBox This script needs to be run using 64 bit version of Autohotkey like "AutoHotkeyU64.exe"
+    ExitApp
+}
 
 class TMsNatural4000
 {
@@ -65,20 +76,28 @@ class TMsNatural4000
         vendorId := AHKHID.GetDevInfo(inputInfo, AHKHID.DI_HID_VENDORID, True)
         productId := AHKHID.GetDevInfo(inputInfo, AHKHID.DI_HID_PRODUCTID, True)
 
-        ; if the event came from our keyboard (vendor and product ids match)
-        if (vendorId = this.vendorId) and (productId = this.productId) {
-            hexString := "0x" . this.BinaryDataToHexDecimalString(uData, numberOfBytes)
-            keyCode := this.SeparateKeyModifiers(hexString)
-            keyName := this.keyCodeToNameMapping[keyCode]
-            this.OnKey(keyName, keyCode, hexString)
+        ; if "vendorId" and "deviceId" don't much, the event came from a different device
+        if (vendorId != this.vendorId) or (productId != this.productId) {
+            return
         }
+
+        ; keycode must be 8 bytes long
+        if (numberOfBytes != 8) {
+            MsgBox Fatal error, wrong number of bytes: %numberOfBytes%
+        }
+
+        hexString := "0x" . this.BinaryDataToHexDecimalString(uData, numberOfBytes)
+        keyCode := this.SeparateKeyModifiers(hexString)
+        keyName := this.keyCodeToNameMapping[keyCode]
+        this.OnKey(keyName, keyCode, hexString)
     }
 
     ; event function, you can override it for some reason
     OnKey(keyName, keyCode, hexString) {
         ; call a subroutine related to the pressed key name if this subroutine exists
-        if IsLabel(keyName) 
+        if IsLabel(keyName) {
             Gosub, %keyName%
+        }
     }
 
     SeparateKeyModifiers(hexString) {
@@ -126,4 +145,3 @@ class TMsNatural4000
 }
 
 MsNatural4000 := new TMsNatural4000()
-
