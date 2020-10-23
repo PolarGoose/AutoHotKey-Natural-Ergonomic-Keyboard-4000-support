@@ -1,4 +1,4 @@
-#include %A_LineFile%\..\ExternalLibraries\nsAHKHID.ahk
+#include %A_LineFile%\..\nsAHKHID.ahk
 
 ; the script relies on CRYPT_STRING_NOCRLF Win32Api flag which is supported only since Vista
 if A_OSVersion in WIN_2003,WIN_XP,WIN_2000

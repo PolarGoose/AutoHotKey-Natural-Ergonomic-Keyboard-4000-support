@@ -1,9 +1,9 @@
 ## Description
-The “Natural_keyboard_4000_support.ahk” module adds support for customizing extra keys
+The `Natural_keyboard_4000_support.ahk` module adds support for customizing extra keys
 from "Microsoft Natural Ergonomic Keyboard 4000" like:
 - favorites buttons
 -  zoom slider
-- ‘=’ ‘(‘ ‘)’ keys on top of the numpad.
+- `=`, `(`, `)` keys on top of the numpad.
 - F-lock button and F1-F12 keys when F-lock is disabled
 
 The library also detects key modifiers like Ctrl and Alt if they are pressed together with the abovementioned buttons.
@@ -19,10 +19,10 @@ The AHK module from this repository connects to the USB HID device and handles e
 
 ## How to use
 - System requirements: Windows Vista 64 bit or later
-- Uninstall "Microsoft Mouse and Keyboard Center" if installed
-- Simply copy the files including "ExternalLibraries" folder to the folder with your script.
-- Look at the "example.ahk" file, which shows how you can use this library.
-- The full list of keys with their labels is located inside the “Natural_keyboard_4000_support.ahk” file.
+- Uninstall "Microsoft Mouse and Keyboard Center" if installed (or make sure it is not running, because it will cause conflicts with this module as it connects to the same USB HID device)
+- Download the latest [Release](https://github.com/PolarGoose/AutoHotKey-Natural-Ergonomic-Keyboard-4000-support/releases) and extract it.
+- Look at the "example.ahk" file inside the release package, which shows how you can use this library.
+- The full list of keys with their labels is located inside the "Natural_keyboard_4000_support.ahk" file.
 - Use `AutoHotkeyU64` to run the scripts.
 
 ## References
