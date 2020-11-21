@@ -40,7 +40,7 @@ MsNatural4000_MyFavorites:
         return
     }
 
-    if MsNatural4000_keyModifiers.LCtrl and MsNatural4000.keyModifiers.RCtrl {
+    if MsNatural4000.keyModifiers.LCtrl and MsNatural4000.keyModifiers.RCtrl {
         MsgBox LeftCtrl+RightCtrl and MyFavorites button
         return
     }
